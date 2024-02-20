@@ -1,0 +1,4 @@
+add john 1234567890
+change John 0987654321
+change Jane 0987654321
+phone jOHN

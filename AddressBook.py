@@ -76,16 +76,18 @@ class AddressBook(UserDict):
         self.data[record.name] = record
     
     # Пошук запису по імені
-    def find(self, name):
+    def find(self, name) -> Record|None:
         for key in self.data.keys():
             if str(key) == name:
                 return self.data[key]
+        return None
 
     # Видаляємо запис з телефонної книги по імені
-    def delete(self, name):
+    def delete(self, name) -> Record|None:
         for key in self.data.keys():
-            if str(key) == name:
+            if str(key.value) == name:
                 return self.data.pop(key)
+        return None
             
     def get_upcoming_birthdays(self):
         # Отримуємо поточну дату
