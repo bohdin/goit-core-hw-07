@@ -42,7 +42,9 @@ def change_contact(args, book: AddressBook):
     name, phone = args
     # Робим щоб імена починалися з великої літери
     name = name.capitalize()
+    # Видаляємо запис
     record = book.delete(name)
+    # Міняємо номер телефону і заново додаємо запис
     if record:
         record.edit_phone(str(record.phones[0].value), phone)
         book.add_record(record)        
@@ -54,7 +56,9 @@ def change_contact(args, book: AddressBook):
 def show_phone(args, book: AddressBook):  
     # Приводимо ім'я до потрібної нам форми
     name = args[0].capitalize()
+    # Знаходити запис про людину
     record = book.find(name)
+    # Якщо така людина є, виводимо номер телефону
     if record:
         return str(record.phones[0])
     else:
@@ -76,7 +80,7 @@ def add_birthday(args, book: AddressBook):
     # Робим щоб імена починалися з великої літери
     name = name.capitalize()
     record = book.delete(name)
-    # Якщо такою людини ще немає в словнику додаємо
+    # Якщо така людина є, додаємо день народження
     if record:        
         record.add_birthday(birthday)
         book.add_record(record)
@@ -88,7 +92,9 @@ def add_birthday(args, book: AddressBook):
 def show_birthday(args, book: AddressBook):
     # Приводимо ім'я до потрібної нам форми
     name = args[0].capitalize()
+    # Шукаємо потрібний запис
     record = book.find(name)
+    # Якщо запис знайшли
     if record:
         birthday = record.birthday 
         return str(birthday) if birthday else "Contact don't have birthday"

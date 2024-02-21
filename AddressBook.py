@@ -32,9 +32,8 @@ class Birthday(Field):
                 raise Exception("Invalid date of birthday")  
         except ValueError:
             raise Exception("Invalid date format. Use DD.MM.YYYY")
-        except Exception as e:
-            raise Exception(e)
 
+    # Приводимо дату до стрінгу
     def __str__(self):
         return self.value.strftime("%d.%m.%Y")
 
@@ -44,6 +43,7 @@ class Record:
         self.phones = []
         self.birthday = None
 
+    # Додаємо день народження 
     def add_birthday(self, birthday: str):
         self.birthday = Birthday(birthday)
 
@@ -66,9 +66,9 @@ class Record:
                 return phone
 
     def __str__(self):
-        if not self.birthday:
+        if not self.birthday: # Вивід контакту без дня народження
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
-        else:
+        else: # Вивід контакту з днем народження
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday}"
 
 class AddressBook(UserDict):
