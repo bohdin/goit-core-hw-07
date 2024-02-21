@@ -10,6 +10,8 @@ def input_error(func):
             return "Contact doesn't exists."
         except IndexError:
             return "Invalid contact."
+        except Exception as e:
+            return e
         
     return inner
 
@@ -52,31 +54,51 @@ def change_contact(args, book: AddressBook):
 def show_phone(args, book: AddressBook):  
     # Приводимо ім'я до потрібної нам форми
     name = args[0].capitalize()
-    return str(book.find(name))
+    record = book.find(name)
+    if record:
+        return str(record.phones[0])
+    else:
+        raise(KeyError)
     
 
 @input_error
-def show_all(contacts):
+def show_all(book: AddressBook):
     # Якщо словник не пустий, виводимо контакти через enter
-    if contacts:
-        return "\n".join(f"{name}: {phone}" for name, phone in contacts.items())
+    if book.data:
+        return "\n".join(str(record) for _, record in book.data.items())
     else:
         return "No contacts."
     
 @input_error
-def add_birthday(args, book):
-    # реалізація
-    pass
+def add_birthday(args, book: AddressBook):
+    # Розбиваємо список
+    name, birthday = args
+    # Робим щоб імена починалися з великої літери
+    name = name.capitalize()
+    record = book.delete(name)
+    # Якщо такою людини ще немає в словнику додаємо
+    if record:        
+        record.add_birthday(birthday)
+        book.add_record(record)
+        return "Birthday added."
+    else:
+        raise(KeyError)
 
 @input_error
-def show_birthday(args, book):
-    # реалізація
-    pass
+def show_birthday(args, book: AddressBook):
+    # Приводимо ім'я до потрібної нам форми
+    name = args[0].capitalize()
+    record = book.find(name)
+    if record:
+        birthday = record.birthday 
+        return str(birthday) if birthday else "Contact don't have birthday"
+    else:
+        raise(KeyError)
 
 @input_error
-def birthdays(args, book):
-    # реалізація
-    pass
+def birthdays(args, book: AddressBook):
+    birthdays_list = book.get_upcoming_birthdays()
+    return "\n".join(str(record) for record in birthdays_list)
 
     
 def main():

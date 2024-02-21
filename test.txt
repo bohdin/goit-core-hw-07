@@ -1,4 +1,16 @@
+add
+add-birthday Gain 29.11.1975
 add john 1234567890
 change John 0987654321
 change Jane 0987654321
 phone jOHN
+add Jane 1111111111
+add-birthday John 24.02.1975
+show-birthday john
+show-birthday Jane
+add boda 9999999999
+add-birthday boda 13.04.2003
+add-birthday Jane 13-04-2003
+add Kolya 123
+birthdays
+exit

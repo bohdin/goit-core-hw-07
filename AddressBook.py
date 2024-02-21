@@ -1,5 +1,4 @@
 from collections import UserDict
-import datetime as dt
 from datetime import datetime, timedelta
 
 class Field:
@@ -19,7 +18,7 @@ class Phone(Field):
         if len(value) == 10:
             super().__init__(value)
         else:
-            raise(ValueError) # Викидаємо виняток, якщо номер не має 10 символів
+            raise Exception("Phone number must be equal to 10") # Викидаємо виняток, якщо номер не має 10 символів
         
 class Birthday(Field):
     def __init__(self, value):
@@ -32,9 +31,12 @@ class Birthday(Field):
             else:
                 raise Exception("Invalid date of birthday")  
         except ValueError:
-            raise ValueError("Invalid date format. Use DD.MM.YYYY")
+            raise Exception("Invalid date format. Use DD.MM.YYYY")
         except Exception as e:
             raise Exception(e)
+
+    def __str__(self):
+        return self.value.strftime("%d.%m.%Y")
 
 class Record:
     def __init__(self, name):
@@ -67,7 +69,7 @@ class Record:
         if not self.birthday:
             return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
         else:
-            return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday.value}"
+            return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday}"
 
 class AddressBook(UserDict):
 
@@ -100,6 +102,8 @@ class AddressBook(UserDict):
             
             if  record.birthday:
 
+                upcoming_birthday = dict()
+
                 # Змінює рік на поточний
                 birthday_this_year = record.birthday.value.replace(year = today.year)
                 
@@ -118,7 +122,8 @@ class AddressBook(UserDict):
                         birthday_this_year += timedelta(days=1)
 
                     # Додаємо словник до списку
-                    upcoming_birthdays.append(str(record))
+                    upcoming_birthday[str(name)] = birthday_this_year.strftime("%d.%m.%Y")
+                    upcoming_birthdays.append(upcoming_birthday)
             
         return upcoming_birthdays
     
@@ -130,7 +135,7 @@ if __name__ == "__main__":
     john_record = Record("John")
     john_record.add_phone("1234567890")
     john_record.add_phone("5555555555")
-    john_record.add_birthday('21.02.2023')
+    john_record.add_birthday('24.02.1975')
     # Додавання запису John до адресної книги
     book.add_record(john_record)
 
